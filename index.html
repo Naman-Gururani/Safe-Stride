@@ -1,229 +1,250 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8" />
-        <meta name="description" content="Fall Detection site" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>Fall Detection</title>
-        <link rel="stylesheet" href="style.css" />
-        <link rel="icon" href="Icon.jfif" />
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="description" content="Fall Detection site" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Fall Detection</title>
+    <link rel="stylesheet" href="style.css" />
+    <link rel="icon" href="Icon.jfif" />
 
-        <!-- Imports map -->
-        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css"
-        integrity="sha256-kLaT2GOSpHechhsozzB+flnD+zUyjE2LlfWPgU04xyI="
-        crossorigin=""/>
+    <!-- Imports map -->
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css"
+      integrity="sha256-kLaT2GOSpHechhsozzB+flnD+zUyjE2LlfWPgU04xyI="
+      crossorigin=""
+    />
 
-        <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"
-        integrity="sha256-WBkoXOwTeyKclOHuWtc+i2uENFpDZ9YPdf5Hf+D7ewM="
-        crossorigin=""></script>
+    <script
+      src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"
+      integrity="sha256-WBkoXOwTeyKclOHuWtc+i2uENFpDZ9YPdf5Hf+D7ewM="
+      crossorigin=""
+    ></script>
 
-        <style>
-            #map { height: 350px; }
-        </style>
-    </head>
-    <body>
-        <header class="header">
-            <a href="#" class="logo">Fall Detection System</a>
-            <nav class="navbar">
-                <a href="#" class="active">Dashboard</a>
-                <a href="#" class="active">Geolocation</a>
-                <a href="#" class="active">About</a>
-                <a href="#" class="active">FAQ</a>
-                <a href="#" class="active">Contact</a>
-            </nav>
-        </header>
-        <section class="dashboard" id="dashboard">
-            <div class="dashboard-content">
-                <h3>Hey! "User",</h3>
-                <h3>Welcome to <span>"Fall Detection System"</span></h3>
-                <p>
-                    Here is the user's live location.
-                </p>
-                <a href="#geolocation" class="btn">Show Location</a>
-            </div>
-            <div class="dashboard-img">
-                <img src="grandma.jfif" alt="Profile Pic">
-            </div>
-        </section>
-        <section class="geolocation" id="geolocation">
+    <style>
+      #map {
+        height: 350px;
+      }
+    </style>
+  </head>
+  <body>
+    <header class="header">
+      <a href="#" class="logo">Fall Detection System</a>
+      <nav class="navbar">
+        <a href="#" class="active">Dashboard</a>
+        <a href="#" class="active">Geolocation</a>
+        <a href="#" class="active">About</a>
+        <a href="#" class="active">FAQ</a>
+        <a href="#" class="active">Contact</a>
+      </nav>
+    </header>
+    <section class="dashboard" id="dashboard">
+      <div class="dashboard-content">
+        <h3>Hey! "User",</h3>
+        <h3>Welcome to <span>"Fall Detection System"</span></h3>
+        <p>Here is the user's live location.</p>
+        <a href="#geolocation" class="btn">Show Location</a>
+      </div>
+      <div class="dashboard-img">
+        <img src="grandma.jfif" alt="Profile Pic" />
+      </div>
+    </section>
+    <section class="geolocation" id="geolocation">
+      <h2 class="heading">Live <span>Location</span></h2>
 
-            <h2 class="heading">Live <span>Location</span></h2>
-    
-            <!-- <h1>geolocation Site</h1> -->
-    
-            <!-- This is the output id -->
-    
-            <div id="map"></div>
-    
-            <!-- This is the trigger for fall and acceleration change -->
-    
-            <h1>Emergency Alert</h1>
-            <p>Current location: <span id="location"></span></p>
-            <p>Acceleration: <span id="acceleration"></span></p>
-            <button id="alertButton" style="display: none;">Stop</button>
-    
-            <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    
-            <script>
-                // Get the user's location
-                function getLocation() {
-                  if (navigator.geolocation) {
-                    navigator.geolocation.getCurrentPosition(showPosition);
-                  } else {
-                    alert("Geolocation is not supported by this browser.");
-                  }
-                }
-            
-                // Show the user's location
-                var message1;
-                var message;
-                function showPosition(position) {
-                  $("#location").html(position.coords.latitude + ", " +
-                    position.coords.longitude);
-                  var lat = position.coords.latitude;
-                  var long = position.coords.longitude;
-            
-                  var slat = lat.toString();
-                  var slng = long.toString();
-                  message =  slat;
-                  message1 = slng;
-                }
-            
-                if (window.DeviceMotionEvent) {
-                  window.addEventListener("devicemotion", handleAccelerationEvent, true);
-            
-                  function handleAccelerationEvent(event) {
-                    let acceleration = event.accelerationIncludingGravity;
-                    let accelerationMagnitude = Math.sqrt(
-                      acceleration.x * acceleration.x +
-                      acceleration.y * acceleration.y +
-                      acceleration.z * acceleration.z
-                    );
-            
-                    // Check if the acceleration is greater than 10
-                    if (accelerationMagnitude > 16) {
-                      console.log("Acceleration: " + accelerationMagnitude);
-                      $("#acceleration").html(accelerationMagnitude);
-            
-                      // Start a 30 seconds timer
-                      var timer = setTimeout(function () {
-                        // Show the pop-up button
-                        $("#alertButton").show();
-                        $("#alertButton").on("click", function () {
-                          // Stop the timer
-                          sendSMS(position.coords.latitude, position.coords.longitude);
-                          clearTimeout(timer);
-                        });
-            
-                        // Send SMS after 30 seconds if the user doesn't click the stop button
-                        setTimeout(function () {
-                          if ($("#alertButton").is(":visible")) {
-                            // sendSMS(position.coords.latitude, position.coords.longitude);
-                            sendSMS();
-                          }
-                        }, 30000);
-                      }, 10000);
-                    }
-                  }
-                }
-                //
-                function sendSMS() {
-                  //var to = '+919151793170';
-                  // var message = "heyyaa";
-                  $.ajax({
-                    type: "POST",
-                    url: "https://api.twilio.com/2010-04-01/Accounts/ACba7215b3e1db467217fc81831151a9be/Messages.json",
-                    headers: {
-                      "Authorization": "Basic " + btoa("ACba7215b3e1db467217fc81831151a9be:cafffc60cc5721485eee1e61c2b33103")
-                    },
-                    data: {
-                      "To": to,
-                      "From": "+15744987518",
-                      "Body": 'Fall has been detected at location:'+' '+'https://www.openstreetmap.org/#map=16/'+message+'/' + message1
-                    },
-                    success: function (response) {
-                      alert("SMS sent successfully!");
-                    },
-                    error: function (XMLHttpRequest, textStatus, errorThrown) {
-                      alert("Failed to send SMS!");
-                    }
-                  });
-                }
-                
-                // Call the getLocation function when the page is loaded
-                $(document).ready(function () {
-                  getLocation();
-                });
-            </script>
-        </section>
-    </body>
-    <script>
+      <!-- <h1>geolocation Site</h1> -->
 
-        /* Making geolocator without accelerator  */
-    
-        var map = L.map('map');
-        map.setView([51.505, -0.09], 13); //shows map with locator
-    
-        L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            maxZoom: 19,
-            attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-        }).addTo(map);
-    
-        if(!navigator.geolocation){
-            throw new Error("No geolocation available");
+      <!-- This is the output id -->
+
+      <div id="map"></div>
+
+      <!-- This is the trigger for fall and acceleration change -->
+
+      <h1>Emergency Alert</h1>
+      <p>Current location: <span id="location"></span></p>
+      <p>Acceleration: <span id="acceleration"></span></p>
+      <button id="alertButton" style="display: none">Stop</button>
+
+      <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+      <script>
+        // Get the user's location
+        function getLocation() {
+          if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(showPosition);
+          } else {
+            alert("Geolocation is not supported by this browser.");
+          }
         }
-    
-        /* takes 3 argument 1. SUCCESS- function fires if coordinates are succesfully retrieved, 2. ERROR- function fires if cordinates are not retrieved 3. OPTIONS- It is an OBJECT that specify how you want to retrieve location of the user  */
-    
-        let marker, circle, zoomed;
-    
-        function success(pos){
-    
-            const lat = pos.coords.latitude;
-            const lng = pos.coords.longitude;
-            const accuracy = pos.coords.accuracy;
-    
-            if(marker){
-                map.removeLayer(marker);
-                map.removeLayer(circle);
+
+        // Show the user's location
+        var message1;
+        var message;
+        function showPosition(position) {
+          $("#location").html(
+            position.coords.latitude + ", " + position.coords.longitude
+          );
+          var lat = position.coords.latitude;
+          var long = position.coords.longitude;
+
+          var slat = lat.toString();
+          var slng = long.toString();
+          message = slat;
+          message1 = slng;
+        }
+        var flag = true;
+        if (window.DeviceMotionEvent) {
+          window.addEventListener(
+            "devicemotion",
+            handleAccelerationEvent,
+            true
+          );
+
+          function handleAccelerationEvent(event) {
+            let acceleration = event.accelerationIncludingGravity;
+            let accelerationMagnitude = Math.sqrt(
+              acceleration.x * acceleration.x +
+                acceleration.y * acceleration.y +
+                acceleration.z * acceleration.z
+            );
+
+            // Check if the acceleration is greater than 10
+            if (accelerationMagnitude > 40 && flag == true) {
+              console.log("Acceleration: " + accelerationMagnitude);
+              $("#acceleration").html(accelerationMagnitude);
+
+              // Start a 30 seconds timer
+              var timer = setTimeout(function () {
+                // Show the pop-up button
+                $("#alertButton").show();
+                $("#alertButton").on("click", function () {
+                  // Stop the timer
+                  flag = false;
+                  clearTimeout(timer);
+                });
+
+                // Send SMS after 30 seconds if the user doesn't click the stop button
+                setTimeout(function () {
+                  if ($("#alertButton").is(":visible")) {
+                    // sendSMS(position.coords.latitude, position.coords.longitude);
+                    if (flag) {
+                      sendSMS();
+                    }
+                    flag = false;
+                  }
+                }, 30000);
+              }, 10000);
             }
-    
-            marker = L.marker([lat,lng]).addTo(map);
-            circle = L.circle([lat,lng], { radius: accuracy } ).addTo(map);
-    
-            if(!zoomed){
-                zoomed = map.fitBounds(circle.getBounds());
-            }
-    
-            map.setView([lat,lng]);
-    
-            /*const markup = `
+          }
+        }
+        //
+        function sendSMS() {
+          var to = "+919151793170";
+          // var message = "heyyaa";
+          if (!flag) return;
+
+          $.ajax({
+            type: "POST",
+            url: "https://api.twilio.com/2010-04-01/Accounts/AC5a4f508069eff0b5664bc8a3d0e4ea83/Messages.json",
+            headers: {
+              Authorization:
+                "Basic " +
+                btoa(
+                  "AC5a4f508069eff0b5664bc8a3d0e4ea83:eb770bbf4cd818bb4875cbdc13656c01"
+                ),
+            },
+            data: {
+              To: to,
+              From: "+16813846491",
+              Body:
+                "Fall has been detected at location:" +
+                " " +
+                "https://www.openstreetmap.org/#map=16/" +
+                message +
+                "/" +
+                message1,
+            },
+            success: function (response) {
+              alert("SMS sent successfully!");
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+              alert("Failed to send SMS!");
+            },
+          });
+        }
+
+        // Call the getLocation function when the page is loaded
+        $(document).ready(function () {
+          getLocation();
+        });
+      </script>
+    </section>
+  </body>
+  <script>
+    /* Making geolocator without accelerator  */
+
+    var map = L.map("map");
+    map.setView([51.505, -0.09], 13); //shows map with locator
+
+    L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
+      maxZoom: 19,
+      attribution:
+        '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+    }).addTo(map);
+
+    if (!navigator.geolocation) {
+      throw new Error("No geolocation available");
+    }
+
+    /* takes 3 argument 1. SUCCESS- function fires if coordinates are succesfully retrieved, 2. ERROR- function fires if cordinates are not retrieved 3. OPTIONS- It is an OBJECT that specify how you want to retrieve location of the user  */
+
+    let marker, circle, zoomed;
+
+    function success(pos) {
+      const lat = pos.coords.latitude;
+      const lng = pos.coords.longitude;
+      const accuracy = pos.coords.accuracy;
+
+      if (marker) {
+        map.removeLayer(marker);
+        map.removeLayer(circle);
+      }
+
+      marker = L.marker([lat, lng]).addTo(map);
+      circle = L.circle([lat, lng], { radius: accuracy }).addTo(map);
+
+      if (!zoomed) {
+        zoomed = map.fitBounds(circle.getBounds());
+      }
+
+      map.setView([lat, lng]);
+
+      /*const markup = `
             <a href="https://www.openstreetmap.org/#map=${lat}/${lng}">
                 your current position: latitude: ${lat}, longitude: ${lng}.
             </a>
             `; 
     
             document.getElementById('output').innerHTML = markup;*/
-     
-            /* console.log(pos); */   
-        }
-    
-        function error(err){
-            if(err.code === 1){
-                alert("Please allow access to Geolocation");
-            }
-            else{
-                alert("Position unavailable");
-            }
-        }
-    
-        const options = {
-            enableHighAccuracy: true,
-            timeout: 1000,
-            maximumAge: 2000,
-        };
-    
-        navigator.geolocation.watchPosition(success, error, options);
-    
-      </script>
+
+      /* console.log(pos); */
+    }
+
+    function error(err) {
+      if (err.code === 1) {
+        alert("Please allow access to Geolocation");
+      } else {
+        alert("Position unavailable");
+      }
+    }
+
+    const options = {
+      enableHighAccuracy: true,
+      timeout: 1000,
+      maximumAge: 2000,
+    };
+
+    navigator.geolocation.watchPosition(success, error, options);
+  </script>
 </html>
