@@ -1,1 +1,143 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    text-decoration: none;
+    border: none;
+    outline: none;
+    scroll-behavior: smooth;
+    font-family: 'Poppins', sans-serif;
+}
 
+:root{
+    --bg-color: rgb(200, 183, 186);
+    --second-bg-color: rgb(236, 221, 223);
+    --third-bg-color: #323946;
+    --text-color: #060202;
+    --main-color: #0ef;
+}
+
+html {
+    font-size: 62.5%;
+    overflow-x: hidden;
+}   
+
+body {
+    background: var(--bg-color);
+    color: var(--text-color);
+}
+
+section {
+    min-height: 100vh;
+    padding: 10rem 9% 2rem;
+    
+}
+
+.header{
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    padding: 2rem 9%;
+    background: var(--bg-color);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 1;
+}
+
+.header.sticky {
+    border-bottom: .1rem solid rgba(0, 0, 0, .2);
+}
+
+.logo {
+    font-size: 2.5rem;
+    color: var(--text-color);
+    font-weight: 600;
+    cursor: default;
+}
+
+.navbar a{
+    font-size: 1.7rem;
+    color: var(--text-color);
+    margin-left: 4rem;
+    transition: 0.3sec;
+}
+
+.navbar a:hover,
+.navbar a.active.hover{
+    color: var(--main-color);
+}
+
+.dashboard{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+}
+
+.dashboard-content h3{
+    font-size: 3.2rem;
+    font-weight: 700;
+    padding: 10px 0px;
+}
+
+.dashboard-content h3:nth-of-type(2){
+    margin-bottom: 2rem;
+    padding: 10px 0px;
+}
+
+span {
+    color: var(--main-color);
+
+}
+
+.dashboard-content h1{
+    font-size: 5.6rem;
+    font-weight: 700;
+    line-height: 1.3;
+}
+
+.dashboard-img img {
+    width: 20vw;
+    margin-left: 3rem;
+    animation: floatImage 4s ease-in-out infinite;
+}
+
+@keyframes floatImage {
+
+    0%{
+        transform: translateY(0);
+    }
+    50%{
+        transform: translateY(-2.4rem);
+    }
+    100%{
+        transform: translateY(0);
+    }
+    
+}
+
+.dashboard-content p{
+    font-size: 1.6rem;
+
+}
+
+.btn {
+    display: inline-block;
+    padding: 1rem 2.8rem;
+    margin-top: 30px;
+    background: var(--main-color);
+    border-radius: 4rem;
+    box-shadow: 0 0 1rem var(--main-color);
+    font-size: 1.6rem;
+    color: var(--third-bg-color);
+    letter-spacing: .1rem;
+    font-weight: 600;
+    transition: .5 ease;
+
+}
+
+.btn hover{
+    box-shadow: none;
+}
