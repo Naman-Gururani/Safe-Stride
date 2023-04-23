@@ -93,7 +93,7 @@
           message = slat;
           message1 = slng;
         }
-        var flag = true;
+
         if (window.DeviceMotionEvent) {
           window.addEventListener(
             "devicemotion",
@@ -110,7 +110,7 @@
             );
 
             // Check if the acceleration is greater than 10
-            if (accelerationMagnitude > 40 && flag == true) {
+            if (accelerationMagnitude > 16) {
               console.log("Acceleration: " + accelerationMagnitude);
               $("#acceleration").html(accelerationMagnitude);
 
@@ -120,7 +120,7 @@
                 $("#alertButton").show();
                 $("#alertButton").on("click", function () {
                   // Stop the timer
-                  flag = false;
+                  sendSMS(position.coords.latitude, position.coords.longitude);
                   clearTimeout(timer);
                 });
 
@@ -128,10 +128,7 @@
                 setTimeout(function () {
                   if ($("#alertButton").is(":visible")) {
                     // sendSMS(position.coords.latitude, position.coords.longitude);
-                    if (flag) {
-                      sendSMS();
-                    }
-                    flag = false;
+                    sendSMS();
                   }
                 }, 30000);
               }, 10000);
@@ -140,23 +137,21 @@
         }
         //
         function sendSMS() {
-          var to = "+919151793170";
+          //var to = '+919151793170';
           // var message = "heyyaa";
-          if (!flag) return;
-
           $.ajax({
             type: "POST",
-            url: "https://api.twilio.com/2010-04-01/Accounts/AC5a4f508069eff0b5664bc8a3d0e4ea83/Messages.json",
+            url: "https://api.twilio.com/2010-04-01/Accounts/ACba7215b3e1db467217fc81831151a9be/Messages.json",
             headers: {
               Authorization:
                 "Basic " +
                 btoa(
-                  "AC5a4f508069eff0b5664bc8a3d0e4ea83:eb770bbf4cd818bb4875cbdc13656c01"
+                  "ACba7215b3e1db467217fc81831151a9be:cafffc60cc5721485eee1e61c2b33103"
                 ),
             },
             data: {
               To: to,
-              From: "+16813846491",
+              From: "+15744987518",
               Body:
                 "Fall has been detected at location:" +
                 " " +
@@ -179,6 +174,76 @@
           getLocation();
         });
       </script>
+    </section>
+    <section class="about" id="about">
+      <div class="about-content">
+        <h2 class="heading">About <span>Fall Detection System</span></h2>
+        <!-- <h3></h3> -->
+        <p>
+          Fall Detection System is used to detect falls by analysing the data
+          such as the acceleration, longitude and latitude. A machine learning
+          algorithm is made to run on the collected data which constantly
+          detects if a fall event has occured. When a fall is detected an SOS
+          message is sent to the emergency services and relatives which
+          increases the chances of survival as help is immediately provided to
+          the patient.
+        </p>
+        <a href="" class="btn">Read More</a>
+      </div>
+    </section>
+    <section class="faq" id="faq">
+      <h2 class="heading"><span>FAQ</span></h2>
+      <div class="faq-container">
+        <div class="faq-box">
+          <i class="bx bx-code-curly"></i>
+          <h3>What if a false fall is detected?</h3>
+          <p>
+            There is a 10 second timer which will start when a fall is detected
+            and the user can stop the timer preventing it from sending an SOS in
+            case a false fall is detected.
+          </p>
+        </div>
+        <div class="faq-box">
+          <i class="bx bx-code-alt"></i>
+          <h3>How accurate is the fall detection mechanism?</h3>
+          <p>
+            The fall detection algorithm is accurate almost all the time as it
+            takes into consideration parameters like the acceleration, longitude
+            and latitude of the person.
+          </p>
+        </div>
+        <div class="faq-box">
+          <i class="bx bxs-data"></i>
+          <h3>Are there any additional features?</h3>
+          <p>
+            Yes, for patients with alzheimer's there is a constant live location
+            update mechanism through which we can see if the person is in their
+            home at all times.
+          </p>
+        </div>
+      </div>
+    </section>
+    <section class="contact" id="contact">
+      <h2 class="heading">Contact <span>Us!</span></h2>
+
+      <form action="#">
+        <div class="input-box">
+          <input type="text" placeholder="Full Name" />
+          <input type="email" placeholder="Email" />
+        </div>
+        <div class="input-box">
+          <input type="number" placeholder="Moblie number" />
+          <input type="text" placeholder="Email Subject" />
+        </div>
+        <textarea
+          name=""
+          id=""
+          cols="30"
+          rows="10"
+          placeholder="Your Message"
+        ></textarea>
+        <input type="submit" value="Send Message" class="btn" />
+      </form>
     </section>
   </body>
   <script>
