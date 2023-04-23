@@ -64,7 +64,7 @@
       <h1>Emergency Alert</h1>
       <p>Current location: <span id="location"></span></p>
       <p>Acceleration: <span id="acceleration"></span></p>
-      <button id="alertButton" style="display: none">Stop</button>
+      <button class="alertbtn" id="alertButton" style="display: none">Stop</button>
 
       <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
@@ -93,7 +93,7 @@
           message = slat;
           message1 = slng;
         }
-        var flag = true;
+
         if (window.DeviceMotionEvent) {
           window.addEventListener(
             "devicemotion",
@@ -110,7 +110,7 @@
             );
 
             // Check if the acceleration is greater than 10
-            if (accelerationMagnitude > 40 && flag == true) {
+            if (accelerationMagnitude > 16) {
               console.log("Acceleration: " + accelerationMagnitude);
               $("#acceleration").html(accelerationMagnitude);
 
@@ -120,7 +120,7 @@
                 $("#alertButton").show();
                 $("#alertButton").on("click", function () {
                   // Stop the timer
-                  flag = false;
+                  sendSMS(position.coords.latitude, position.coords.longitude);
                   clearTimeout(timer);
                 });
 
@@ -128,34 +128,30 @@
                 setTimeout(function () {
                   if ($("#alertButton").is(":visible")) {
                     // sendSMS(position.coords.latitude, position.coords.longitude);
-                    if (flag) {
-                      sendSMS();
-                    }
+                    sendSMS();
                   }
                 }, 30000);
-              }, 2000);
+              }, 10000);
             }
           }
         }
         //
         function sendSMS() {
-          var to = "+919151793170";
-          if (!flag) return;
-          flag = false;
+          //var to = '+919151793170';
           // var message = "heyyaa";
           $.ajax({
             type: "POST",
-            url: "https://api.twilio.com/2010-04-01/Accounts/AC5a4f508069eff0b5664bc8a3d0e4ea83/Messages.json",
+            url: "https://api.twilio.com/2010-04-01/Accounts/ACba7215b3e1db467217fc81831151a9be/Messages.json",
             headers: {
               Authorization:
                 "Basic " +
                 btoa(
-                  "AC5a4f508069eff0b5664bc8a3d0e4ea83:eb770bbf4cd818bb4875cbdc13656c01"
+                  "ACba7215b3e1db467217fc81831151a9be:cafffc60cc5721485eee1e61c2b33103"
                 ),
             },
             data: {
               To: to,
-              From: "+16813846491",
+              From: "+15744987518",
               Body:
                 "Fall has been detected at location:" +
                 " " +
