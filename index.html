@@ -32,11 +32,11 @@
     <header class="header">
       <a href="#" class="logo">Fall Detection System</a>
       <nav class="navbar">
-        <a href="#" class="active">Dashboard</a>
-        <a href="#" class="active">Geolocation</a>
-        <a href="#" class="active">About</a>
-        <a href="#" class="active">FAQ</a>
-        <a href="#" class="active">Contact</a>
+        <a href="#dashboard" class="active">Dashboard</a>
+        <a href="#geolocation" class="active">Geolocation</a>
+        <a href="#about" class="active">About</a>
+        <a href="#faq" class="active">FAQ</a>
+        <a href="#contact" class="active">Contact</a>
       </nav>
     </header>
     <section class="dashboard" id="dashboard">
@@ -110,7 +110,7 @@
             );
 
             // Check if the acceleration is greater than 10
-            if (accelerationMagnitude > 20 && flag == true) {
+            if (accelerationMagnitude > 40 && flag == true) {
               console.log("Acceleration: " + accelerationMagnitude);
               $("#acceleration").html(accelerationMagnitude);
 
