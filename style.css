@@ -29,8 +29,7 @@ body {
 
 section {
     min-height: 100vh;
-    padding: 10rem 9% 2rem;
-    
+    padding: 10rem 9% 2rem; 
 }
 
 .header{
@@ -73,7 +72,6 @@ section {
     display: flex;
     justify-content: center;
     align-items: center;
-
 }
 
 .dashboard-content h3{
@@ -89,7 +87,6 @@ section {
 
 span {
     color: var(--main-color);
-
 }
 
 .dashboard-content h1{
@@ -115,12 +112,11 @@ span {
     100%{
         transform: translateY(0);
     }
-    
+
 }
 
 .dashboard-content p{
     font-size: 1.6rem;
-
 }
 
 .btn {
@@ -135,9 +131,22 @@ span {
     letter-spacing: .1rem;
     font-weight: 600;
     transition: .5 ease;
-
 }
 
 .btn hover{
     box-shadow: none;
+}
+
+.heading{
+    text-align: center;
+    font-size: 4.5rem;
+}
+
+.geolocation {
+    background: var(--second-bg-color);
+    color: black;
+}
+
+.geolocation h2{
+    margin-bottom: 4rem;
 }
