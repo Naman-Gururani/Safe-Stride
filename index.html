@@ -145,12 +145,12 @@
           // var message = "heyyaa";
           $.ajax({
             type: "POST",
-            url: "https://api.twilio.com/2010-04-01/Accounts/AC5a4f508069eff0b5664bc8a3d0e4ea83/Messages.json",
+            url: "https://api.twilio.com/2010-04-01/Accounts/Account_SID/Messages.json",
             headers: {
               Authorization:
                 "Basic " +
                 btoa(
-                  "AC5a4f508069eff0b5664bc8a3d0e4ea83:eb770bbf4cd818bb4875cbdc13656c01"
+                  "Account_SID:Auth_Token"
                 ),
             },
             data: {
