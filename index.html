@@ -2,9 +2,9 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="description" content="Fall Detection site" />
+    <meta name="description" content="Safe Stride" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Fall Detection</title>
+    <title>Safe Stride</title>
     <link rel="stylesheet" href="style.css" />
     <link rel="icon" href="Icon.jfif" />
 
@@ -30,19 +30,19 @@
   </head>
   <body>
     <header class="header">
-      <a href="#" class="logo">Fall Detection System</a>
+      <a href="#" class="logo">Safe Stride</a>
       <nav class="navbar">
-        <a href="#" class="active">Dashboard</a>
-        <a href="#" class="active">Geolocation</a>
-        <a href="#" class="active">About</a>
-        <a href="#" class="active">FAQ</a>
-        <a href="#" class="active">Contact</a>
+        <a href="#dashboard" class="active">Dashboard</a>
+        <a href="#geolocation" class="active">Geolocation</a>
+        <a href="#about" class="active">About</a>
+        <a href="#faq" class="active">FAQ</a>
+        <a href="#contact" class="active">Contact</a>
       </nav>
     </header>
     <section class="dashboard" id="dashboard">
       <div class="dashboard-content">
         <h3>Hey! "User",</h3>
-        <h3>Welcome to <span>"Fall Detection System"</span></h3>
+        <h3>Welcome to <span>"Safe Stride"</span></h3>
         <p>Here is the user's live location.</p>
         <a href="#geolocation" class="btn">Show Location</a>
       </div>
@@ -64,7 +64,7 @@
       <h1>Emergency Alert</h1>
       <p>Current location: <span id="location"></span></p>
       <p>Acceleration: <span id="acceleration"></span></p>
-      <button id="alertButton" style="display: none">Stop</button>
+      <button class="alertbtn" id="alertButton" style="display: none">Stop</button>
 
       <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
@@ -93,7 +93,7 @@
           message = slat;
           message1 = slng;
         }
-
+        var flag = true;
         if (window.DeviceMotionEvent) {
           window.addEventListener(
             "devicemotion",
@@ -109,8 +109,8 @@
                 acceleration.z * acceleration.z
             );
 
-            // Check if the acceleration is greater than 10
-            if (accelerationMagnitude > 16) {
+            // Check if the acceleration is greater than 20
+            if (accelerationMagnitude > 20 && flag == true) {
               console.log("Acceleration: " + accelerationMagnitude);
               $("#acceleration").html(accelerationMagnitude);
 
@@ -120,7 +120,7 @@
                 $("#alertButton").show();
                 $("#alertButton").on("click", function () {
                   // Stop the timer
-                  sendSMS(position.coords.latitude, position.coords.longitude);
+                  flag = false;
                   clearTimeout(timer);
                 });
 
@@ -128,16 +128,20 @@
                 setTimeout(function () {
                   if ($("#alertButton").is(":visible")) {
                     // sendSMS(position.coords.latitude, position.coords.longitude);
-                    sendSMS();
+                    if (flag) {
+                      sendSMS();
+                    }
                   }
                 }, 30000);
-              }, 10000);
+              }, 2000);
             }
           }
         }
         //
         function sendSMS() {
-          //var to = '+919151793170';
+          var to = "+919151793170";
+          if (!flag) return;
+          flag = false;
           // var message = "heyyaa";
           $.ajax({
             type: "POST",
@@ -151,7 +155,7 @@
             },
             data: {
               To: to,
-              From: "+15744987518",
+              From: "+16813846491",
               Body:
                 "Fall has been detected at location:" +
                 " " +

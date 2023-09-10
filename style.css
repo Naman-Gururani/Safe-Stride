@@ -133,6 +133,25 @@ span {
     transition: .5 ease;
 }
 
+.alertbtn{
+    display: inline-block;
+    padding: 1rem 2.8rem;
+    margin-top: 30px;
+    background: var(--main-color);
+    border-radius: 4rem;
+    box-shadow: 0 0 1rem var(--main-color);
+    font-size: 1.6rem;
+    color: var(--third-bg-color);
+    letter-spacing: .1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: .5 ease;    
+}
+
+.alertbtn hover{
+    box-shadow: none;
+}
+
 .btn hover{
     box-shadow: none;
 }
@@ -145,6 +164,16 @@ span {
 .geolocation {
     background: var(--second-bg-color);
     color: black;
+}
+
+.geolocation h1{
+    margin-top: 2rem;
+    font-size: 3rem;
+}
+
+.geolocation p{
+    margin-top: 1rem;
+    font-size: 2rem;
 }
 
 .geolocation h2{
